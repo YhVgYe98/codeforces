@@ -1,0 +1,6 @@
+display char1
+display char2
+display char1_cnt
+display char2_cnt
+display char_now
+display j
