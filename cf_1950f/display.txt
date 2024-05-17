@@ -1,0 +1,4 @@
+display cap1
+display cap2
+display depth
+display res
