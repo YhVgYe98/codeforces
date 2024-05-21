@@ -32,7 +32,9 @@
 *.app
 
 
-
+# clangd
+.clangd
 
 # rust
 */target
+
