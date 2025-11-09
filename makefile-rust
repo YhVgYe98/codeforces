@@ -1,0 +1,42 @@
+SRC           = $(SRC_BASE)$(SOURCE_EXT)
+TEMPLATE_FILE = $(TEMPLATE_DIR)/main$(SOURCE_EXT)
+
+COMPILER      := rustc
+SOURCE_EXT    := .rs
+TARGET_DIR    := ./target
+DEBUG_DIR     := $(TARGET_DIR)/debug
+RELEASE_DIR   := $(TARGET_DIR)/release
+
+TARGET_DEBUG  := $(DEBUG_DIR)/$(SRC_BASE)
+TARGET_RELEASE:= $(RELEASE_DIR)/$(SRC_BASE)
+
+.PHONY: _build_debug _build_release _run_test _run_release _clean
+
+_build_debug: $(TARGET_DEBUG)
+
+_build_release: $(TARGET_RELEASE)
+
+_run_test: _build_debug $(IN_FILE)
+	@echo "===== Running DEBUG build of '$(SRC)' with file I/O ====="
+	'$(TARGET_DEBUG)' < '$(IN_FILE)' > '$(OUT_FILE)'
+	@echo "Output written to '$(OUT_FILE)'"
+	@echo "===== Done ====="
+
+_run_release: _build_release
+	@echo "===== Running RELEASE build of '$(SRC)' with standard I/O ====="
+	'$(TARGET_RELEASE)'
+
+_clean:
+	@echo "===== Cleaning up Rust files for '$(Q)' ====="
+	rm -f '$(TARGET_DEBUG)' '$(TARGET_RELEASE)'
+	rm -rf '$(DEBUG_DIR)' '$(RELEASE_DIR)'
+
+$(TARGET_DEBUG): $(SRC)
+	@echo "===== Compiling '$(SRC)' in Rust DEBUG mode ====="
+	@mkdir -p $(DEBUG_DIR)
+	$(COMPILER) -C debuginfo=2 --out-dir $(DEBUG_DIR) $<
+
+$(TARGET_RELEASE): $(SRC)
+	@echo "===== Compiling '$(SRC)' for Rust RELEASE ====="
+	@mkdir -p $(RELEASE_DIR)
+	$(COMPILER) -C opt-level=3 --out-dir $(RELEASE_DIR) $<

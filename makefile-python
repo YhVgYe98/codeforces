@@ -1,0 +1,26 @@
+SRC           = $(SRC_BASE)$(SOURCE_EXT)
+TEMPLATE_FILE = $(TEMPLATE_DIR)/main$(SOURCE_EXT)
+
+INTERPRETER   := python3
+SOURCE_EXT    := .py
+
+.PHONY: _build_debug _build_release _run_test _run_release _clean
+
+_build_debug:
+
+_build_release:
+
+_run_test: _build_debug $(IN_FILE)
+	@echo "===== Running '$(SRC)' with file I/O ====="
+	$(INTERPRETER) '$(SRC)' < '$(IN_FILE)' > '$(OUT_FILE)'
+	@echo "Output written to '$(OUT_FILE)'"
+	@echo "===== Done ====="
+
+_run_release: _build_release
+	@echo "===== Running '$(SRC)' with standard I/O ====="
+	$(INTERPRETER) '$(SRC)'
+
+_clean:
+	@echo "===== Cleaning up Python files for '$(Q)' ====="
+	find __pycache__ -name "$(SRC_BASE).*.pyc" -delete 2>/dev/null || true
+

@@ -1,0 +1,40 @@
+SRC           = $(SRC_BASE)$(SOURCE_EXT)
+TEMPLATE_FILE = $(TEMPLATE_DIR)/main$(SOURCE_EXT)
+
+COMPILER      := g++
+SOURCE_EXT    := .cc
+COMPILE_FLAGS := -std=c++17 -Wall
+RELEASE_FLAGS := -O2
+DEBUG_FLAGS   := -DDEBUG -g -fsanitize=address,undefined
+
+TARGET_DEBUG  := $(SRC_BASE)_debug.out
+TARGET_RELEASE:= $(SRC_BASE).out
+
+
+.PHONY: _build_debug _build_release _run_test _run_release _clean
+
+_build_debug: $(TARGET_DEBUG)
+
+_build_release: $(TARGET_RELEASE)
+
+_run_test: _build_debug $(IN_FILE)
+	@echo "===== Running DEBUG build of '$(SRC)' with file I/O ====="
+	./'$(TARGET_DEBUG)' < '$(IN_FILE)' > '$(OUT_FILE)'
+	@echo "Output written to '$(OUT_FILE)'"
+	@echo "===== Done ====="
+
+_run_release: _build_release
+	@echo "===== Running RELEASE build of '$(SRC)' with standard I/O ====="
+	./'$(TARGET_RELEASE)'
+
+_clean:
+	@echo "===== Cleaning up C++ files for '$(Q)' ====="
+	rm -f '$(TARGET_DEBUG)' '$(TARGET_RELEASE)'
+
+$(TARGET_DEBUG): $(SRC)
+	@echo "===== Compiling '$(SRC)' in C++ DEBUG mode ====="
+	$(COMPILER) $< $(COMPILE_FLAGS) $(DEBUG_FLAGS) -o '$(TARGET_DEBUG)'
+
+$(TARGET_RELEASE): $(SRC)
+	@echo "===== Compiling '$(SRC)' for C++ RELEASE ====="
+	$(COMPILER) $< $(COMPILE_FLAGS) $(RELEASE_FLAGS) -o '$(TARGET_RELEASE)'
