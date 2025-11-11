@@ -5,11 +5,9 @@ using ll = long long;
 using pii = std::pair<int, int>;
 using vi = std::vector<int>;
 using vll = std::vector<ll>;
-using vpii = std::vector<pair<int,int>>;
 const int INF = 1e9;
 const ll LINF = 1e18;
 const int MOD = 1e9 + 7;
-#define FOR_EACH(ind, container) for(size_t ind=0; ind<(container).size(); ind++)
 
 // ==================================================
 #ifdef DEBUG
@@ -67,5 +65,54 @@ int main() {
 
 
 void solution() {
-    //TODO
+    int n;
+    cin>>n;
+    vector<int> p(n,0);
+    for(int i=0; i<n; i++) cin>>p[i];
+    string t;
+    cin>>t;
+
+    if(n==1) {
+        if(t[0]=='1') {
+            cout<<"0"<<endl;
+        } else {
+            cout<<"-1"<<endl;
+        }
+        return;
+    }
+    if(n==2) {
+        debug(t);
+        if(t[0]=='1' && t[1]=='1') {
+            cout<<"0"<<endl;
+        } else {
+            cout<<"-1"<<endl;
+        }
+        return;
+    }
+    if(t[0] == '1' || t[n-1] == '1') {
+        cout<<"-1"<<endl;
+        return;
+    }
+    int ind_max, ind_min;
+    for(int i=0; i<n; i++) {
+        if(p[i] == 1) ind_min=i;
+        if(p[i] == n) ind_max=i;
+    }
+    if(t[ind_max] == '1' || t[ind_min] == '1') {
+        debug(t,ind_min,ind_max,t[ind_max],t[p[ind_min]]);
+        cout<<"-1"<<endl;
+        return;
+    }
+    int step = (ind_max+1 != 1) + (ind_max+1 != n) + (ind_min+1 != 1) + (ind_min+1 != n) + 1;
+    cout<<step<<endl;
+    cout<<((ind_min<ind_max)?ind_min:ind_max)+1<<" "<<((ind_min<ind_max)?ind_max:ind_min)+1<<endl;
+    if(ind_max+1 != 1)
+        cout<<"1"<<" "<<ind_max+1<<endl;
+    if(ind_max+1 != n)
+        cout<<ind_max+1<<" "<<n<<endl;
+    if(ind_min+1 != 1)
+        cout<<"1"<<" "<<ind_min+1<<endl;
+    if(ind_min+1 != n)
+        cout<<ind_min+1<<" "<<n<<endl;
+    return;
 }

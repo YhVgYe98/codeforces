@@ -11,6 +11,7 @@ const ll LINF = 1e18;
 const int MOD = 1e9 + 7;
 #define FOR_EACH(ind, container) for(size_t ind=0; ind<(container).size(); ind++)
 
+
 // ==================================================
 #ifdef DEBUG
 static_assert(__cplusplus >= 201703L, "Require C++17 or higher for debug macros.");
@@ -64,8 +65,50 @@ int main() {
 }
 // ==================================================
 
-
-
 void solution() {
-    //TODO
+    int n;
+    cin>>n;
+    vi line1(n,0);
+    vi line2(n,0);
+    for(int i=0; i<n; i++) cin>>line1[i];
+    for(int i=0; i<n; i++) cin>>line2[i];
+
+    vector<pair<ll,ll>> lr1(n,pair<ll,ll>(0,0));
+    vector<pair<ll,ll>> lr2(n,pair<ll,ll>(0,0));
+    vector<pair<ll,ll>> lr12(n,pair<ll,ll>(0,0));
+
+    lr1[0] = {line1[0], line1[0]};
+    for(int i=1; i<n; i++) {
+        lr1[i] = {min(lr1[i-1].first, ll(line1[i])), max(lr1[i-1].second, ll(line1[i]))};
+    }
+    
+    lr2[n-1] = {line2[n-1], line2[n-1]};
+    for(int i=n-2; i>=0; i--) {
+        lr2[i] = {min(lr2[i+1].first, ll(line2[i])), max(lr2[i+1].second, ll(line2[i]))};
+    }
+
+    for(int i=0; i<n; i++) {
+        lr12[i] = {min(lr1[i].first, lr2[i].first), max(lr1[i].second, lr2[i].second)};
+    }
+
+    FOR_EACH(i, lr12) {
+        lr12[i].second = 2*n + 1 - lr12[i].second;
+    }
+
+    // 接下来相当于计算所有矩形(1,1) - (l,r) 围成的面积
+    sort(lr12.begin(), lr12.end());
+    debug(lr12);
+    ll res = 0;
+    ll l;
+    ll r;
+    ll last_r = 0;
+    for(int i = lr12.size()-1; i>=0 ; i--) {
+        l = lr12[i].first;
+        r = lr12[i].second;
+        if(r>last_r) {
+            res += l*(r-last_r);
+            last_r = r;
+        }
+    }
+    cout<<res<<endl;
 }
