@@ -1,6 +1,19 @@
 {
     "files.associations": {
         "chrono": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "forward_list": "cpp",
+        "compare": "cpp",
+        "new": "cpp",
+        "array": "cpp",
+        "any": "cpp",
+        "string_view": "cpp",
+        "flat_map": "cpp",
+        "flat_set": "cpp",
+        "ranges": "cpp",
+        "stacktrace": "cpp",
+        "regex": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp"
     }
 }
