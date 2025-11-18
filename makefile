@@ -5,6 +5,7 @@ SRC_BASE      := $(Q)
 IN_FILE       := $(SRC_BASE)_in.txt
 OUT_FILE      := $(SRC_BASE)_out.txt
 TEMPLATE_DIR  := ./template
+TEMPLATE_NAME := template
 
 # ===================================================
 
